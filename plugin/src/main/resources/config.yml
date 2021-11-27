@@ -1,0 +1,18 @@
+server-name: game-1
+
+sign-header: "[RMC-GSign]"
+
+sign-format:
+  - "&9%sign-header%"
+  - "&7%server-id%"
+  - "&aStatus: %status%"
+  - "&a%online-players%/%max-players%"
+
+messenger:
+  type: MySQL
+  sql:
+    host: 127.0.0.1
+    port: 3306
+    database: gamesigns
+    username: gamesigns
+    password: P4s5w0rd

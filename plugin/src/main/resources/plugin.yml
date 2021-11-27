@@ -1,0 +1,9 @@
+name: RMCGameSigns
+description: Game status signs.
+
+author: SavageAvocado.
+website: savagedev.net
+
+version: ${version}
+main: net.revelationmc.gamesigns.GameSignsPlugin
+api-version: 1.13

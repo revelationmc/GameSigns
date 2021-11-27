@@ -1,0 +1,6 @@
+group 'net.revelationmc'
+version '1.0.0-SNAPSHOT'
+
+build {
+    archivesBaseName = rootProject.name + '-' + project.name
+}

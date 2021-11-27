@@ -1,0 +1,4 @@
+rootProject.name = 'GameSigns'
+include 'api'
+include 'plugin'
+
