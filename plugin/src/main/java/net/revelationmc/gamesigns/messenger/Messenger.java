@@ -1,8 +1,9 @@
 package net.revelationmc.gamesigns.messenger;
 
 import net.revelationmc.gamesigns.api.GameState;
-import net.revelationmc.gamesigns.model.ServerData;
+import net.revelationmc.gamesigns.model.server.ServerData;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 public interface Messenger {
@@ -10,13 +11,11 @@ public interface Messenger {
 
     void shutdown();
 
-    void register(String name, int maxPlayers);
-
-    void sendGameState(GameState gameState);
+    void sendGameState(GameState gameState) throws SQLException;
 
     void sendPlayerCount(int playerCount);
 
-    ServerData getServerData(String server);
+    Set<String> getServersAddedAfter(long timeAdded);
 
-    Set<String> getAllServers();
+    Set<ServerData> getServers(Set<String> serverIds);
 }

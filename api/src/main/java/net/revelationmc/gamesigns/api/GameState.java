@@ -3,8 +3,7 @@ package net.revelationmc.gamesigns.api;
 public enum GameState {
     IN_GAME("In game"),
     WAITING("Waiting"),
-    OFFLINE("Offline"),
-    UNKNOWN("Unknown");
+    RESTARTING("Restarting");
 
     private final String name;
 

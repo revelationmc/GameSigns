@@ -1,9 +1,9 @@
 package net.revelationmc.gamesigns.listeners;
 
 import net.revelationmc.gamesigns.GameSignsPlugin;
+import net.revelationmc.gamesigns.model.sign.GameSign;
 import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -30,7 +30,7 @@ public class BuildListener implements Listener {
                 return;
             }
 
-            if (!this.plugin.serverExists(server)) {
+            if (!this.plugin.getServersIds().contains(server)) {
                 event.setLine(0, "");
                 event.setLine(1, ChatColor.RED + "Server \"" + server + "\"");
                 event.setLine(2, ChatColor.RED + "does not exist!");
@@ -38,8 +38,11 @@ public class BuildListener implements Listener {
                 return;
             }
 
-            this.plugin.getConfig().set("signs." + server, event.getBlock().getLocation());
-            this.plugin.saveConfig();
+            final GameSign sign = this.plugin.getGameSignManager().getOrCreate(event.getBlock().getLocation());
+            sign.setServer(server);
+
+            this.plugin.getServerSignConfiguration().set("signs." + server, event.getBlock().getLocation());
+            this.plugin.saveServerSignConfiguration();
 
             event.setLine(0, "");
             event.setLine(1, ChatColor.GREEN + "Waiting for data...");
@@ -52,22 +55,12 @@ public class BuildListener implements Listener {
 
     @EventHandler
     public void on(BlockBreakEvent event) {
-        final Block block = event.getBlock();
+        final Location location = event.getBlock().getLocation();
 
-        if (!(block.getState() instanceof Sign)) {
-            System.out.println("Not a sign.");
-            return;
-        }
-
-        final Sign sign = (Sign) block.getState();
-
-        try {
-            final String header = sign.getLine(0);
-            if (header.equals(this.plugin.getConfig().getString("sign-header"))) {
-                this.plugin.getConfig().set("signs." + sign.getLine(1), null);
-                this.plugin.saveConfig();
-            }
-        } catch (IndexOutOfBoundsException ignored) {
-        }
+        this.plugin.getGameSignManager().get(location).ifPresent(sign -> {
+            this.plugin.getServerSignConfiguration().set("signs." + sign.getServer(), null);
+            this.plugin.saveServerSignConfiguration();
+            this.plugin.getGameSignManager().unload(location);
+        });
     }
 }

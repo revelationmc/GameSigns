@@ -1,4 +1,4 @@
-package net.revelationmc.gamesigns.model;
+package net.revelationmc.gamesigns.model.server;
 
 import net.revelationmc.gamesigns.api.GameState;
 
