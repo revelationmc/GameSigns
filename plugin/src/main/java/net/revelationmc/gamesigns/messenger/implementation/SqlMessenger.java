@@ -87,7 +87,7 @@ public class SqlMessenger implements Messenger {
     public void shutdown() {
         try (final Connection connection = this.dataSource.getConnection()) {
             try (final PreparedStatement statement =
-                         connection.prepareStatement("UPDATE gamesign_data SET game_state = ? WHERE server_id = ?;")) {
+                         connection.prepareStatement("UPDATE gamesign_data SET current_players = 0, game_state = ? WHERE server_id = ?;")) {
                 statement.setString(1, GameState.RESTARTING.name());
                 statement.setString(2, this.plugin.getConfig().getString("server-name"));
                 statement.executeUpdate();
