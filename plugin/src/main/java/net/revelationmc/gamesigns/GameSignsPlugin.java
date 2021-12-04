@@ -110,7 +110,6 @@ public class GameSignsPlugin extends JavaPlugin implements GameSignsAPI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.serversIds.add(this.getConfig().getString("server-name"));
     }
 
     private void initManagers() {
@@ -123,6 +122,7 @@ public class GameSignsPlugin extends JavaPlugin implements GameSignsAPI {
         this.getServer().getScheduler()
                 .runTaskTimerAsynchronously(this, new ServerDataFetchTask(this,
                         new MessageConsumer(this)), 0L, 10L);
+        this.serversIds.add(this.getConfig().getString("server-name"));
     }
 
     private void initListeners() {
