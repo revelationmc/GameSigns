@@ -169,4 +169,22 @@ public class SqlMessenger implements Messenger {
         }
         return servers;
     }
+
+    @Override
+    public Set<String> getAllServers() {
+        final Set<String> servers = new HashSet<>();
+        try (final Connection connection = this.dataSource.getConnection()) {
+            try (final PreparedStatement statement =
+                         connection.prepareStatement("SELECT server_id FROM gamesign_data;")) {
+                try (final ResultSet result = statement.executeQuery()) {
+                    while (result.next()) {
+                        servers.add(result.getString("server_id"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return servers;
+    }
 }

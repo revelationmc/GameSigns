@@ -18,4 +18,6 @@ public interface Messenger {
     Set<String> getServersAddedAfter(long timeAdded);
 
     Set<ServerData> getServers(Set<String> serverIds);
+
+    Set<String> getAllServers();
 }

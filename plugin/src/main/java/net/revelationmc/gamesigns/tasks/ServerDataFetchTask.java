@@ -26,7 +26,12 @@ public class ServerDataFetchTask implements Runnable {
 
     @Override
     public void run() {
-        final Set<String> newServers = this.plugin.getMessenger().getServersAddedAfter(this.mostRecentTimestamp);
+        Set<String> newServers;
+        if (this.plugin.getServersIds().size() == 1) {
+            newServers = this.plugin.getMessenger().getAllServers();
+        } else {
+            newServers = this.plugin.getMessenger().getServersAddedAfter(this.mostRecentTimestamp);
+        }
 
         if (!newServers.isEmpty()) {
             final int newServerCount = newServers.size();
