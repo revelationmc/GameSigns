@@ -74,10 +74,6 @@ public class SqlMessenger implements Messenger {
                          connection.prepareStatement("CREATE TABLE IF NOT EXISTS gamesign_data(server_id VARCHAR(50) PRIMARY KEY NOT NULL, added BIGINT, game_state ENUM('IN_GAME', 'WAITING', 'RESTARTING'), current_players INT, max_players INT);")) {
                 statement.executeUpdate();
             }
-            /*try (final PreparedStatement statement =
-                         connection.prepareStatement("ALTER TABLE gamesign_data ADD COLUMN added BIGINT FIRST;")) {
-                statement.executeUpdate();
-            }*/
         } catch (SQLException e) {
             e.printStackTrace();
         }

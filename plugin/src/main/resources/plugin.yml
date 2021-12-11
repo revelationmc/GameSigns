@@ -1,7 +1,7 @@
 name: RMCGameSigns
 description: Game status signs.
 
-author: SavageAvocado.
+author: SavageAvocado
 website: savagedev.net
 
 version: ${version}

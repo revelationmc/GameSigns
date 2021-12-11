@@ -30,7 +30,7 @@ public class InteractListener implements Listener {
 
         final Location location = block.getLocation();
 
-        this.plugin.getGameSignManager().get(location)
+        this.plugin.getGameSignManager().getByLocation(location)
                 .ifPresent(sign -> this.send(event.getPlayer(), sign.getServer()));
     }
 

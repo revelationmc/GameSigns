@@ -44,14 +44,7 @@ public class ServerDataFetchTask implements Runnable {
             return;
         }
 
-        final ConfigurationSection section = this.plugin.getServerSignConfiguration()
-                .getConfigurationSection("signs");
-
-        if (section == null) {
-            return;
-        }
-
-        final Set<ServerData> servers = this.plugin.getMessenger().getServers(section.getKeys(false));
+        final Set<ServerData> servers = this.plugin.getMessenger().getServers(this.plugin.getGameSignManager().getUniqueServerIds());
         this.plugin.getServer().getScheduler().runTask(this.plugin, new LocalMessageDispatcher(servers));
     }
 

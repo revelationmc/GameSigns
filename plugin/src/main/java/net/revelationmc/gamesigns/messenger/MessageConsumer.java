@@ -2,9 +2,8 @@ package net.revelationmc.gamesigns.messenger;
 
 import net.revelationmc.gamesigns.GameSignsPlugin;
 import net.revelationmc.gamesigns.model.server.ServerData;
+import net.revelationmc.gamesigns.model.sign.GameSign;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
 import java.util.List;
@@ -19,16 +18,8 @@ public class MessageConsumer implements Consumer<ServerData> {
 
     @Override
     public void accept(ServerData server) {
-        final Location location = this.plugin.getServerSignConfiguration().getLocation("signs." + server.getName());
-
-        if (location == null) {
-            return;
-        }
-
-        final Block block = location.getBlock();
-
-        if (block.getState() instanceof Sign) {
-            final Sign sign = (Sign) block.getState();
+        for (GameSign gameSign : this.plugin.getGameSignManager().getAllSignsForServer(server.getName())) {
+            final Sign sign = gameSign.getBukkitSign();
 
             final List<String> lines = this.plugin.getConfig().getStringList("sign-format");
             for (int i = 0; i < lines.size(); i++) {
@@ -42,9 +33,6 @@ public class MessageConsumer implements Consumer<ServerData> {
             }
 
             sign.update();
-        } else {
-            this.plugin.getServerSignConfiguration().set("signs." + server.getName(), null);
-            this.plugin.saveServerSignConfiguration();
         }
     }
 }

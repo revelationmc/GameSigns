@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 
+import java.util.UUID;
+
 public class BuildListener implements Listener {
     private final GameSignsPlugin plugin;
 
@@ -38,10 +40,16 @@ public class BuildListener implements Listener {
                 return;
             }
 
-            final GameSign sign = this.plugin.getGameSignManager().getOrCreate(event.getBlock().getLocation());
+            if (this.plugin.getGameSignManager().getByLocation(event.getBlock().getLocation()).isPresent()) {
+                return;
+            }
+
+            final GameSign sign = this.plugin.getGameSignManager().getOrCreate(UUID.randomUUID());
+            sign.setLocation(event.getBlock().getLocation());
             sign.setServer(server);
 
-            this.plugin.getServerSignConfiguration().set("signs." + server, event.getBlock().getLocation());
+            this.plugin.getServerSignConfiguration().set("signs." + sign.getUniqueId() + ".location", event.getBlock().getLocation());
+            this.plugin.getServerSignConfiguration().set("signs." + sign.getUniqueId() + ".destination", server);
             this.plugin.saveServerSignConfiguration();
 
             event.setLine(0, "");
@@ -57,10 +65,10 @@ public class BuildListener implements Listener {
     public void on(BlockBreakEvent event) {
         final Location location = event.getBlock().getLocation();
 
-        this.plugin.getGameSignManager().get(location).ifPresent(sign -> {
-            this.plugin.getServerSignConfiguration().set("signs." + sign.getServer(), null);
+        this.plugin.getGameSignManager().getByLocation(location).ifPresent(sign -> {
+            this.plugin.getServerSignConfiguration().set("signs." + sign.getUniqueId(), null);
             this.plugin.saveServerSignConfiguration();
-            this.plugin.getGameSignManager().unload(location);
+            this.plugin.getGameSignManager().unload(sign.getUniqueId());
         });
     }
 }

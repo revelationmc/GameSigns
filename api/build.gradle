@@ -1,6 +1,29 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
 group 'net.revelationmc'
 version '1.1.0-SNAPSHOT'
 
 build {
     archivesBaseName = rootProject.name + '-' + project.name
+}
+
+publishing {
+    repositories {
+        maven {
+            url 'https://repo.savagedev.net/repository/revelation-snapshots/'
+            credentials {
+                username 'Revelation'
+                password 'SuperSecurePassword123'
+            }
+        }
+    }
+
+    publications {
+        api(MavenPublication) {
+            from components.java
+        }
+    }
 }
